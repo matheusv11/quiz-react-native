@@ -9,14 +9,15 @@ export default function RadioButton(props: { selected: boolean, alternative: str
                 }
             </View>
 
-            <Text> {props.alternative} </Text>
+            <Text style={ styles.radioText}> {props.alternative} </Text>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop: 10,
     },
     outerRadio: {
         height: 24,
@@ -33,5 +34,11 @@ const styles = StyleSheet.create({
         width: 12,
         borderRadius: 6,
         backgroundColor: '#000',
+    },
+
+    radioText: {
+        left: 6,
+        minWidth: 100,
+        maxWidth: 150
     }
 });

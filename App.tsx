@@ -10,33 +10,33 @@ export default function App() {
 
   const [quiz, setQuiz] = useState([
     {
-      question: 'Q1',
+      question: 'De quem é a famosa frase “Penso, logo existo”?',
       alternatives: {
-        A: 'Shining 1',
-        B: 'Pearl 1',
-        C: 'Diamond 1'
+        A: 'Descartes',
+        B: 'Platão',
+        C: 'Galileu Galilei'
       },
       answer: 'A',
       selected: ''
     },
     {
-      question: 'Q2',
+      question: 'Qual o nome do presidente do Brasil que ficou conhecido como Jango?',
       alternatives: {
-        A: 'Shining 2',
-        B: 'Pearl 2',
-        C: 'Diamond 2'
+        A: 'Jânio Quadros',
+        B: 'João Goulart',
+        C: 'Jacinto Anjos'
       },
-      answer: 'C',
+      answer: 'B',
       selected: ''
     },
     {
-      question: 'Q3',
+      question: 'Quantas casas decimais tem o número pi?',
       alternatives: {
-        A: 'Shining 3',
-        B: 'Pearl 3',
-        C: 'Diamond 3'
+        A: 'Duas',
+        B: 'Centenas',
+        C: 'Infinitas'
       },
-      answer: 'B',
+      answer: 'C',
       selected: ''
     },
   ])
@@ -62,20 +62,21 @@ export default function App() {
 
   const randomQuiz = (item: object[]) => Math.floor(Math.random() * item.length)
 
-
   useEffect(()=> {
-    setIndexQuiz(randomQuiz(quiz));
-  }, []);
+    const randomIndex = randomQuiz(quiz)
+    setIndexQuiz(randomIndex);
+  }, [points]);
 
   return (
     <View style={styles.container}>
-      <Text>  Pontos: {points} </Text>
-      <Text> {quiz[indexQuiz].question} </Text>
+      <Text style={ styles.pointsText}>  Pontos: {points} </Text>
+      
+      <Text style={ styles.questionText }> {quiz[indexQuiz].question} </Text>
+      
       <StatusBar style="auto" />
       
       <TouchableOpacity onPress={() => setSelected('A') }>
         <RadioButton alternative={ quiz[indexQuiz].alternatives.A } selected={ quiz[indexQuiz].selected === 'A' } />
-        
       </TouchableOpacity>
 
       <TouchableOpacity onPress={()=> setSelected('B') }>
@@ -86,8 +87,8 @@ export default function App() {
         <RadioButton alternative={ quiz[indexQuiz].alternatives.C } selected={ quiz[indexQuiz].selected === 'C' } />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={ answer }>
-        <Text> Responder </Text>
+      <TouchableOpacity style={ styles.answerButton } onPress={ answer }>
+        <Text style={ styles.answerText }> Responder </Text>
       </TouchableOpacity>
 
     </View>
@@ -101,4 +102,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  pointsText: {
+    fontSize: 26,
+    marginBottom: 16,
+  },
+
+  questionText: {
+    fontSize: 16,
+    marginBottom: 12,
+  },
+
+  answerButton: {
+    marginTop: 16,
+    width: 200, // VARIA DE TELA
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 55,
+    borderWidth: 1.8,
+    borderRadius: 6,
+    backgroundColor: '#211cb8'
+  },
+
+  answerText: {
+    fontSize: 18,
+  }
+
 });
