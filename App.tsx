@@ -1,5 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
+import StatusMessage from './components/StatusMessage';
 import RadioButton from './components/RadioButton';
 import { useState, useEffect } from 'react';
 
@@ -7,6 +7,7 @@ export default function App() {
 
   const [indexQuiz, setIndexQuiz] = useState(0);
   const [points, setPoints] = useState(0);
+  const [correct, setCorrect] = useState<boolean | null>(null);
 
   const [quiz, setQuiz] = useState([
     {
@@ -49,7 +50,9 @@ export default function App() {
   const answer = () => {
     const quizes = [...quiz];
     const actualQuiz = quizes[indexQuiz]
-    setPoints(actualQuiz.selected === actualQuiz.answer ? points + 10 : 0)
+    const correct = actualQuiz.selected === actualQuiz.answer
+    setCorrect(correct)
+    setPoints(correct ? points + 10 : 0)
     actualQuiz.selected = ''
     setQuiz(quizes)
   }
@@ -68,29 +71,33 @@ export default function App() {
   }, [points]);
 
   return (
-    <View style={styles.container}>
-      <Text style={ styles.pointsText}>  Pontos: {points} </Text>
-      
-      <Text style={ styles.questionText }> {quiz[indexQuiz].question} </Text>
-      
-      <StatusBar style="auto" />
-      
-      <TouchableOpacity onPress={() => setSelected('A') }>
-        <RadioButton alternative={ quiz[indexQuiz].alternatives.A } selected={ quiz[indexQuiz].selected === 'A' } />
-      </TouchableOpacity>
+    <View style={ {flex: 1 } }>
+      <StatusBar/>
+      {correct !== null && <StatusMessage correct={ correct }/>}
 
-      <TouchableOpacity onPress={()=> setSelected('B') }>
-        <RadioButton alternative={ quiz[indexQuiz].alternatives.B }  selected={ quiz[indexQuiz].selected === 'B' } />
-      </TouchableOpacity>
+      <View style={styles.container}>
+        <Text style={ styles.pointsText}>  Pontos: {points} </Text>
+        
+        <Text style={ styles.questionText }> {quiz[indexQuiz].question} </Text>
+        
+        
+        <TouchableOpacity onPress={() => setSelected('A') }>
+          <RadioButton alternative={ quiz[indexQuiz].alternatives.A } selected={ quiz[indexQuiz].selected === 'A' } />
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=> setSelected('C') }>
-        <RadioButton alternative={ quiz[indexQuiz].alternatives.C } selected={ quiz[indexQuiz].selected === 'C' } />
-      </TouchableOpacity>
+        <TouchableOpacity onPress={()=> setSelected('B') }>
+          <RadioButton alternative={ quiz[indexQuiz].alternatives.B }  selected={ quiz[indexQuiz].selected === 'B' } />
+        </TouchableOpacity>
 
-      <TouchableOpacity style={ styles.answerButton } onPress={ answer }>
-        <Text style={ styles.answerText }> Responder </Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={()=> setSelected('C') }>
+          <RadioButton alternative={ quiz[indexQuiz].alternatives.C } selected={ quiz[indexQuiz].selected === 'C' } />
+        </TouchableOpacity>
 
+        <TouchableOpacity style={ styles.answerButton } onPress={ answer }>
+          <Text style={ styles.answerText }> Responder </Text>
+        </TouchableOpacity>
+
+      </View>
     </View>
   );
 }

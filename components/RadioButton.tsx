@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 
 export default function RadioButton(props: { selected: boolean, alternative: string }) {
     return (
